@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="jars/poi-scratchpad-3.9-20121203.jar"/>
 	<classpathentry kind="lib" path="jars/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="jars/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="jars/pdfbox-app-2.0.4.jar"/>
+	<classpathentry kind="lib" path="jars/pdfbox-tools-2.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

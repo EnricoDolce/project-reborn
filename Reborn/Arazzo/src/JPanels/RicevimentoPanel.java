@@ -1,9 +1,7 @@
 package JPanels;
 
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-
-import java.awt.ItemSelectable;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -11,24 +9,18 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import Global.GlobalVar;
-import customObject.MyComboBoxRenderer;
+import combobox.PCIIComboBox;
 import ricevimentoProfessore.FindOrarioRicevimentoProfessore;
 import ricevimentoProfessore.Professori;
-
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-
-import java.awt.SystemColor;
-import java.awt.TextField;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class RicevimentoPanel extends JPanel {
 
@@ -36,10 +28,13 @@ public class RicevimentoPanel extends JPanel {
 	 * Create the panel.
 	 */
 	
-	int nuProfessori = 189;    //importante!   , dimensione del vettore per immagazzinare i professori
+	int nuProfessori = 188;    //importante!   , dimensione del vettore per immagazzinare i professori
 	private JTextField giorno;
 	private JTextField orario;
 	private FindOrarioRicevimentoProfessore f;
+	Image arrowup ;
+	Image arrowdown;
+	
 	public RicevimentoPanel() {
 		setOpaque(false); //sfondo trasparente del panel per permettere la visione dello sfondo del jframe
 
@@ -48,6 +43,12 @@ public class RicevimentoPanel extends JPanel {
 		
 		 Set <String> tmp = null;
     	 
+		 arrowup = GlobalVar.img_drop_arrow_up.getScaledInstance(15, 15,
+			        Image.SCALE_SMOOTH);
+		 arrowdown= GlobalVar.img_drop_arrow_down.getScaledInstance(15, 15,
+			        Image.SCALE_SMOOTH);
+			
+		 
     	Professori p;
 		try {
 			p = new Professori();
@@ -57,7 +58,7 @@ public class RicevimentoPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
-		String[] professori = new String[190];  // stringa che conterra' tutti i professori
+		String[] professori = new String[nuProfessori];  // stringa che conterra' tutti i professori
 		int i=0;
 		 for (Iterator<String> it = tmp.iterator(); it.hasNext(); ) {
 		        String obj = it.next();
@@ -66,6 +67,12 @@ public class RicevimentoPanel extends JPanel {
 		        	i++;
 		        }
 		    }
+		 
+		//freccetta per professori
+			final JLabel arrow = new JLabel("");
+			arrow.setIcon(new ImageIcon(arrowup));
+			arrow.setBounds(249, 342, 20, 20);
+			add(arrow);
     	
 			 giorno = new JTextField();
 			 giorno.setHorizontalAlignment(SwingConstants.CENTER);
@@ -87,15 +94,17 @@ public class RicevimentoPanel extends JPanel {
 				add(orario);
 				orario.setColumns(10);
     	
-		final JComboBox comboBox = new JComboBox(professori);
+		final PCIIComboBox comboBox = new PCIIComboBox(professori);
 		comboBox.setMaximumRowCount(15);
 		comboBox.setFont(new Font("Oswald", Font.BOLD, 22));
 		comboBox.addItemListener(new ItemListener() {
 		      public void itemStateChanged(ItemEvent e) {
-		    	  
+		    	  arrow.setIcon(new ImageIcon(arrowup));
 					try {
 						
 						f = new FindOrarioRicevimentoProfessore(comboBox.getSelectedItem().toString());
+						f.getRisultato();
+						//System.out.print(f.getGiorno() + " " + f.getOrario());
 						giorno.setText(f.getGiorno());
 						orario.setText(f.getOrario());
 						
@@ -105,17 +114,32 @@ public class RicevimentoPanel extends JPanel {
 					}
 		        }
 		      });
+		comboBox.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				arrow.setIcon(new ImageIcon(arrowdown));
+			}
+		});
 		comboBox.setBounds(267, 340, 200, 30);
 		
 		add(comboBox);
 		
 		JLabel background = new JLabel("");
+		background.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				 arrow.setIcon(new ImageIcon(arrowup));
+			}
+		});
 		background.setIcon(new ImageIcon(GlobalVar.img_ricevimento_panel));
 		background.setBounds(0, 0, 1280, 1024);
 		add(background);
 		
 		try {
 			f = new FindOrarioRicevimentoProfessore(professori[0]);
+			f.getRisultato();
+			//System.out.print(f.getGiorno() + " " + f.getOrario());
 			giorno.setText(f.getGiorno());
 			orario.setText(f.getOrario());
 		} catch (IOException e1) {

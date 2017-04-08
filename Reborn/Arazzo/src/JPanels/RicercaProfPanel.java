@@ -1,41 +1,44 @@
 package JPanels;
 
+import java.awt.Color;
+
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.JPanel;
-
-import ricercaprofessore.GestioneProfessori;
-import ricercaprofessore.Professore;
-import ricevimentoProfessore.FindOrarioRicevimentoProfessore;
-import ricevimentoProfessore.Professori;
+import javax.imageio.ImageIO;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import Global.GlobalVar;
-import customObject.MyComboBoxRenderer;
-
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import combobox.PCIIComboBox;
+import ricercaprofessore.GestioneProfessori;
+import ricercaprofessore.Professore;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 
 public class RicercaProfPanel extends JPanel {
 
-	
+	int nProf = 187; // ! numero professori
 	int ora=0;
 	String giorno="lunedi";
 	String prof="aldi";
-	
+	Image arrowup ;
+	Image arrowdown;
 	private JTextField textField;
 	/**
 	 * Create the panel.
@@ -45,6 +48,11 @@ public class RicercaProfPanel extends JPanel {
 
 		this.setLayout(null);
 		this.setBounds(0, 0, 1280, 1024);
+		
+		 arrowup = GlobalVar.img_drop_arrow_up.getScaledInstance(15, 15,
+		        Image.SCALE_SMOOTH);
+		 arrowdown= GlobalVar.img_drop_arrow_down.getScaledInstance(15, 15,
+		        Image.SCALE_SMOOTH);
 		
 		final GestioneProfessori gestione = new GestioneProfessori();
 		gestione.caricaProfessori();
@@ -64,12 +72,28 @@ public class RicercaProfPanel extends JPanel {
 		
 			String[] giorni = new String[]{"Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato"};
 			
-			String[] professori = new String[190];  // stringa che conterra' tutti i professori
+			String[] professori = new String[nProf];  // stringa che conterra' tutti i professori
 
-			for(int i=0;i<184;i++){
-				System.out.println(tmp.get(i));
+			for(int i=0;i<nProf;i++){
+				//System.out.println(tmp.get(i));
 				professori[i] = tmp.get(i).toString();
 			}
+			
+			//freccetta per professori
+			final JLabel arrow1 = new JLabel("");
+			arrow1.setIcon(new ImageIcon(arrowup));
+			arrow1.setBounds(249, 302, 20, 20);
+			add(arrow1);
+			//freccetta per giorni
+			final JLabel arrow2 = new JLabel("");
+			arrow2.setIcon(new ImageIcon(arrowup));
+			arrow2.setBounds(515, 302, 20, 20);
+			add(arrow2);
+			//freccetta per ore
+			final JLabel arrow3 = new JLabel("");
+			arrow3.setIcon(new ImageIcon(arrowup));
+			arrow3.setBounds(770, 302, 20, 20);
+			add(arrow3);
 			
 			
 			textField = new JTextField();
@@ -83,12 +107,14 @@ public class RicercaProfPanel extends JPanel {
 			add(textField);
 			textField.setColumns(10);
 			
-			final JComboBox OrecomboBox = new JComboBox(ore);
+			
+			final PCIIComboBox OrecomboBox = new PCIIComboBox(ore);
 			OrecomboBox.setBounds(788, 300, 200, 30);
 			OrecomboBox.setFont(new Font("Oswald", Font.BOLD, 22));
 			OrecomboBox.addItemListener(new ItemListener() {
 			      public void itemStateChanged(ItemEvent e) {
-			    	
+			    	  arrow3.setIcon(new ImageIcon(arrowup));
+			    	  
 						ora = OrecomboBox.getSelectedIndex();
 						String tmp = gestione.cercaProfessoreInOra(prof, ora+1, giorno);
 						if(tmp.equals("") || tmp.equals(" "))
@@ -97,14 +123,21 @@ public class RicercaProfPanel extends JPanel {
 							textField.setText(tmp);
 			        }
 			      });
+			OrecomboBox.addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					arrow3.setIcon(new ImageIcon(arrowdown));
+				}
+			});
 			add(OrecomboBox);
 			
-			final JComboBox GiornicomboBox = new JComboBox(giorni);
+			final PCIIComboBox GiornicomboBox = new PCIIComboBox(giorni);
 			GiornicomboBox.setBounds(533, 300, 200, 30);
 			GiornicomboBox.setFont(new Font("Oswald", Font.BOLD, 22));
 			GiornicomboBox.addItemListener(new ItemListener() {
 			      public void itemStateChanged(ItemEvent e) {
-			    	  
+			    	  arrow2.setIcon(new ImageIcon(arrowup));
 			    	
 			    	  giorno = GiornicomboBox.getSelectedItem().toString().toLowerCase();
 			    	  String tmp = gestione.cercaProfessoreInOra(prof, ora+1, giorno);
@@ -114,15 +147,23 @@ public class RicercaProfPanel extends JPanel {
 							textField.setText(tmp);
 			        }
 			      });
+			GiornicomboBox.addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					arrow2.setIcon(new ImageIcon(arrowdown));
+				}
+			});
 			add(GiornicomboBox);
 
 			
-			final JComboBox ProfcomboBox = new JComboBox(professori);
+			final PCIIComboBox ProfcomboBox = new PCIIComboBox(professori);
 			ProfcomboBox.setBounds(267, 300, 200, 30);
 			ProfcomboBox.setFont(new Font("Oswald", Font.BOLD, 22));
 			ProfcomboBox.addItemListener(new ItemListener() {
 			      public void itemStateChanged(ItemEvent e) {
 			    	  
+			    	  arrow1.setIcon(new ImageIcon(arrowup));
 			    	
 			    	  prof = ProfcomboBox.getSelectedItem().toString();
 			    	  
@@ -136,13 +177,29 @@ public class RicercaProfPanel extends JPanel {
 							textField.setText(tmp);
 			        }
 			      });
+			ProfcomboBox.addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					arrow1.setIcon(new ImageIcon(arrowdown));
+				}
+			});
 			add(ProfcomboBox);
+			ProfcomboBox.setMaximumRowCount(15);
 			
-			
+		
 			
 			JLabel background = new JLabel("");
 			background.setIcon(new ImageIcon(GlobalVar.img_ricercaprof_panel));
 			background.setBounds(0, 0, 1280, 1024);
+			background.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					 arrow1.setIcon(new ImageIcon(arrowup));
+					 arrow2.setIcon(new ImageIcon(arrowup));
+					 arrow3.setIcon(new ImageIcon(arrowup));
+				}
+			});
 			add(background);
 			
 			 String app = gestione.cercaProfessoreInOra(prof, ora+1, giorno);

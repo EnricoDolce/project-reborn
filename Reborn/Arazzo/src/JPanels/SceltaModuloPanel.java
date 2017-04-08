@@ -2,17 +2,15 @@ package JPanels;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 
 import Global.GlobalVar;
 
@@ -121,7 +119,7 @@ public class SceltaModuloPanel extends JPanel {
 					{
 						JPanel tmp = new RicercaProfPanel();
 						
-						GoToPanel(tmp);
+						GlobalVar.GoToPanel(tmp);
 					}
 					else if(btn.getText().equals(opt_interno.get(1)))
 					{
@@ -132,23 +130,33 @@ public class SceltaModuloPanel extends JPanel {
 						
 						JPanel tmp = new RicevimentoPanel();
 						
-						GoToPanel(tmp);
+						GlobalVar.GoToPanel(tmp);
 						
 					}
 					else if(btn.getText().equals(opt_interno.get(3)))
 					{
+						JPanel tmp = new ComunicazioniPanel();
 						
+						GlobalVar.GoToPanel(tmp);
 					}
 					else if(btn.getText().equals(opt_interno.get(4)))
 					{
-						
+						JPanel tmp;
+						try {
+							tmp = new VariazioniOrarioPanel();
+							
+							GlobalVar.GoToPanel(tmp);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 				else if(GlobalVar.Ospite==true)
 				{
 					if(btn.getText().equals(opt_ospite.get(0)))
 					{
-						System.out.println("primo");
+						
 					}
 					else if(btn.getText().equals(opt_ospite.get(1)))
 					{
@@ -166,27 +174,6 @@ public class SceltaModuloPanel extends JPanel {
 		return btn;
 	}
 	
-	public void GoToPanel (JPanel tmp){  // da migliorare  ( possibilmente se esiste il jpanel andare direttamente alla posizione dello stack in cui e' istanziato ed eliminare i successivi (forse))
-		
-		if((GlobalVar.Stack.get(GlobalVar.StackPosition).getClass()).equals(tmp.getClass())) //controlla se si tenta di aprire la stessa finestra
-		{
-			
-			
-		}
-		else
-		{
-			GlobalVar.frame.getContentPane().remove(2); // + 2 perche 0  e 1 sono riservati alla toolbar e al menu
-			GlobalVar.frame.getContentPane().add(tmp,2);  // imposto nell'indice 2 (dove setto tutte le schermate) il Jpanel che voglio
-			
-			
-			if(GlobalVar.Stack.size() == GlobalVar.StackPosition) 	// se l'indice dello stack non e' istanziato
-				GlobalVar.Stack.add(GlobalVar.StackPosition,tmp);    // add jpanel
-			else													// altrimenti					
-				GlobalVar.Stack.set(GlobalVar.StackPosition,tmp);	// set jpanel
-		}
-		GlobalVar.frame.repaint();
-		GlobalVar.frame.getContentPane().repaint();  // i repaint servono per far si che la grafica si aggiorni , altrimenti diventa tutto glitchato
-		
-	}
+	
 
 }

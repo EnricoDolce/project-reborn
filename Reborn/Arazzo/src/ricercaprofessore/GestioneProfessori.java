@@ -1,10 +1,8 @@
 package ricercaprofessore;
 
 import java.io.IOException;
-import java.util.Vector;
-import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.Vector;
 
 public class GestioneProfessori {
 	

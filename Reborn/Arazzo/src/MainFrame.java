@@ -1,14 +1,9 @@
 import java.awt.AWTEvent;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Global.GlobalVar;
-import JPanels.NavigationMenu;
 import JPanels.ToolBar;
 
 /**
@@ -27,22 +21,34 @@ import JPanels.ToolBar;
  */
 
 public class MainFrame {
-
+	
 	private static JFrame frame;
-	
-	
-	
+
+
 	/**
 	 * Launch the application.
 	 * 
 	 */
 	public static void main(String[] args) {
+		final Toolkit tk = Toolkit.getDefaultToolkit();
+		final long eventMask =  AWTEvent.MOUSE_EVENT_MASK;
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					
+					
 					MainFrame window = new MainFrame();
 					window.frame.setVisible(true);
+					tk.addAWTEventListener(new AWTEventListener() {
+						
+			            public void eventDispatched(AWTEvent e) {
+			            	
+			         	
+			            }
+			        }, eventMask);
+			        
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -98,14 +104,11 @@ public class MainFrame {
 		frame.getContentPane().add(panel,0);
 		GlobalVar.toolbar = panel;  // salvo la toolbar per farla apparire quando voglio
 		
-		panel = new NavigationMenu();
-		panel.setVisible(false);
-		frame.getContentPane().add(panel,1);
-		GlobalVar.menu = panel; // salvo il navigation menu , casomai dovesse servire
+
 
 		//settaggio Jpanel
 		panel = GlobalVar.Stack.get(GlobalVar.StackPosition);   // prendo dalla classe globalVar del package Global lo stack e la pos attuale dello stack
-		frame.getContentPane().add(panel,2);  //addo il panel al frame
+		frame.getContentPane().add(panel,1);  //addo il panel al frame
 		
 	
 		// frame background
@@ -116,11 +119,12 @@ public class MainFrame {
 		
 		GlobalVar.frame = frame;  // salvo frame per apportare modifiche al frame in futuro da altre classi
 	
-		//device.setFullScreenWindow(frame);
+		device.setFullScreenWindow(frame);
 	}
-	
-	
-	
-	
+
+
+ 
+
+
 	
 }

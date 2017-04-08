@@ -103,39 +103,19 @@ public class FindOrarioRicevimentoProfessore {
 	public String getRisultato(){
 		giorno = giorno.toUpperCase(); 
 		String ora = orario.substring(0,7);
-
-
-		boolean t1 = false;
-		boolean t2 = false;
-		String s ="";
+		orario= orario.substring(orario.length()-15,orario.length());
 		
-			String[] ok = orario.split("()");
-			
-			for(int i=0; i<ok.length;i++)
-			{
-	
-				if(ok[i].equals("("))
-					t1=true;
-			
-				if(t1==true && t2==false )
-					s+=ok[i];
-				
-				if(ok[i].equals(")"))
-					t2=true;
-			}
-			
-
-		risultato = giorno+" "+ora+" "+s;
-		this.orario=s;
+		risultato = giorno+" "+ora+" "+orario;
 		return this.risultato; 
 	}
+
 	public String getGiorno() {
 		return giorno;
 	}
 
 
 	public String getOrario() {
-		//orario= orario.substring(orario.length()-15,orario.length());
+		orario= orario.substring(orario.length()-15,orario.length());
 		return orario;
 	}
 

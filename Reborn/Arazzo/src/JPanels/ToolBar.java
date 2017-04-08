@@ -1,16 +1,14 @@
 package JPanels;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import Global.GlobalVar;
-import java.awt.Color;
-import javax.swing.JLabel;
 
 public class ToolBar extends JPanel {
 
@@ -21,33 +19,36 @@ public class ToolBar extends JPanel {
 	 */
 	public ToolBar() {
 		setBackground(SystemColor.window);
-
+		setOpaque(false);
 		this.setLayout(null);
-		this.setBounds(0, 0, 1280, 40);
+		this.setBounds(0, 0, 1280, 100);
 
-		
+
 		final JButton left = new JButton("");
 		left.setBorderPainted(false);
+		left.setFocusPainted(false);
 		left.setContentAreaFilled(false);
 		left.setIcon(new ImageIcon(GlobalVar.img_left_arrow));
-		left.setBounds(10, 5, 30, 30);
+		left.setBounds(10, 5, 60, 60);
 		add(left);
+
 		
-		final JButton right = new JButton("");
-		right.setBorderPainted(false);
-		right.setContentAreaFilled(false); 
-		right.setIcon(new ImageIcon(GlobalVar.img_right_arrow));
-		right.setBounds(50, 5, 30, 30);
-		add(right);
+		final JButton home = new JButton("");
+		home.setBorderPainted(false);
+		home.setContentAreaFilled(false);
+		home.setIcon(new ImageIcon(GlobalVar.img_home));
+		home.setBounds(1180,-15, 100, 100);
+		add(home);
+	
 		
 		//base per non far passare il click oltre la toolbar e di conseguenza cliccare altre cose sotto di essa
 		JButton base = new JButton("");
 		base.setBorderPainted(false);
 		base.setContentAreaFilled(false); 
-		base.setBounds(0, 0, 1280, 40);
+		base.setBounds(1180,0, 100, 100);
 		add(base);
 		
-		
+
 		left.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				
@@ -67,14 +68,14 @@ public class ToolBar extends JPanel {
 					GlobalVar.Stack.set(GlobalVar.StackPosition, null);
 					GlobalVar.StackPosition--; // decremento la posizione attuale in cui mi trovo
 					
-					GlobalVar.frame.getContentPane().remove(2); // rimuovo il Jpanel che sta nell'indice 2 del frame
-					GlobalVar.frame.getContentPane().add(GlobalVar.Stack.get(GlobalVar.StackPosition),2); // setto il Jpanel che e' stato aperto precedentemente
+					GlobalVar.frame.getContentPane().remove(1); // rimuovo il Jpanel che sta nell'indice 2 del frame
+					GlobalVar.frame.getContentPane().add(GlobalVar.Stack.get(GlobalVar.StackPosition),1); // setto il Jpanel che e' stato aperto precedentemente
 					GlobalVar.frame.repaint();
 					GlobalVar.frame.getContentPane().repaint(); // aggiorno la grafica
 					
-					if(GlobalVar.StackPosition == 0) // se mi trovo alla schermata principale , ovvero di scelta fra ospite e interno
+					if(GlobalVar.StackPosition == 0) // se mi trovo alla schermata principale , o scelta moduli
 					{
-						GlobalVar.menu.setVisible(false); //rendo invisibile la navigationMenu
+						
 						GlobalVar.toolbar.setVisible(false); // rendo invisibile la toolbar
 					}
 				}
@@ -84,40 +85,35 @@ public class ToolBar extends JPanel {
 		});
 		
 		
-		right.addMouseListener(new MouseAdapter() {
+		home.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				
-				right.setIcon(new ImageIcon(GlobalVar.img_right_arrow_pressed));
 			
-				System.out.println("Bottone right premuto");
+				home.setIcon(new ImageIcon(GlobalVar.img_home_pressed));
+				
+			
+				System.out.println("Bottone back premuto");
 	
 			}
 			public void mouseReleased(MouseEvent arg0) {
 				
 				
-				right.setIcon(new ImageIcon(GlobalVar.img_right_arrow));
+				home.setIcon(new ImageIcon(GlobalVar.img_home));
 				
-				// descrizione dei comandi sono le stesse del bottone 'left'
-				if((GlobalVar.StackPosition + 1)< GlobalVar.Stack.size())
-				{
-					GlobalVar.StackPosition++;
+					GlobalVar.StackPosition = 0; 
 					
-					GlobalVar.frame.getContentPane().remove(2);
-					GlobalVar.frame.getContentPane().add(GlobalVar.Stack.get(GlobalVar.StackPosition),2);
+					GlobalVar.frame.getContentPane().remove(1); // rimuovo il Jpanel che sta nell'indice 2 del frame
+					GlobalVar.frame.getContentPane().add(GlobalVar.Stack.get(GlobalVar.StackPosition),1); // setto il Jpanel che e' stato aperto precedentemente
 					GlobalVar.frame.repaint();
-					GlobalVar.frame.getContentPane().repaint();
+					GlobalVar.frame.getContentPane().repaint(); // aggiorno la grafica
 					
-					if(GlobalVar.StackPosition == 1) // se mi trovo in posizione successiva a 0(scelta ospite o interno) ovvero 1 , devo attivare il NavigationMenu e la toolbar in modo che siano visibili anche successivamente
-					{
-						GlobalVar.menu.setVisible(true);
-						GlobalVar.toolbar.setVisible(true);
-					}
+					
+						GlobalVar.toolbar.setVisible(false); // rendo invisibile la toolbar
 					
 				}
-				
-			}
-		});
 		
+			
+		});
 		
 
 	}

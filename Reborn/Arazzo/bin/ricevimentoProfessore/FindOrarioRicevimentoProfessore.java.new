@@ -1,8 +1,8 @@
 package ricevimentoProfessore;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,12 +23,7 @@ public class FindOrarioRicevimentoProfessore {
 
 	public FindOrarioRicevimentoProfessore(String prof) throws IOException {
 		 excelFilePath = "/orari_ricevimenti.xlsx" ;
-		try {
-			inputStream = new FileInputStream(new File(getClass().getResource(excelFilePath).toURI()));
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		inputStream = new FileInputStream(new File(excelFilePath));
 		workbook = new XSSFWorkbook(inputStream);
 		firstSheet = workbook.getSheetAt(0);
 		iterator = firstSheet.iterator();
@@ -126,16 +121,17 @@ public class FindOrarioRicevimentoProfessore {
 			
 
 		risultato = giorno+" "+ora+" "+s;
-		this.orario=s;
 		return this.risultato; 
 	}
+	
+	
 	public String getGiorno() {
 		return giorno;
 	}
 
 
 	public String getOrario() {
-		//orario= orario.substring(orario.length()-15,orario.length());
+		orario= orario.substring(orario.length()-15,orario.length());
 		return orario;
 	}
 

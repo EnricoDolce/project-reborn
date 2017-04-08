@@ -36,10 +36,10 @@ public class Main2 {
         }
         
         
-        FindOrarioRicevimentoProfessore f = new FindOrarioRicevimentoProfessore("PANZARELLA F.");
-        risultato=f.getRisultato(); 
-        System.out.println(risultato);
-        
+        FindOrarioRicevimentoProfessore f = new FindOrarioRicevimentoProfessore("COSSU");
+        f.getRisultato(); 
+        System.out.println(f.getOrario()+ " "+f.getGiorno());
+
     }
    
  

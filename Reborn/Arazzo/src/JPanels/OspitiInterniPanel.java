@@ -5,12 +5,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import Global.GlobalVar;
-import java.awt.SystemColor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class OspitiInterniPanel extends JPanel {
 
@@ -53,23 +50,10 @@ public class OspitiInterniPanel extends JPanel {
 						
 						JPanel tmp = new SceltaModuloPanel();
 						
-						GlobalVar.frame.getContentPane().remove(2); // + 2 perche 0  e 1 sono riservati alla toolbar e al menu
-						GlobalVar.frame.getContentPane().add(tmp,2);  // imposto nell'indice 2 (dove setto tutte le schermate) il Jpanel che voglio
-						GlobalVar.frame.getContentPane().remove(1);	 //rimuovo il navigationMenu (altrimenti nel caso in cui avesse cabiato opzoni , il navigation menu sarebbe rimasto con scelta precedente)
-						GlobalVar.menu = new NavigationMenu();
-						GlobalVar.frame.getContentPane().add(GlobalVar.menu,1); // setto nell' indice 1 del frame (dove metto sempre il navigationMenu) il navigationMenu
-						GlobalVar.menu.setVisible(true);
+						
 						GlobalVar.toolbar.setVisible(true);
 						
-						GlobalVar.StackPosition++;
-						if(GlobalVar.Stack.size() == GlobalVar.StackPosition) 	// se l'indice dello stack non e' istanziato
-							GlobalVar.Stack.add(GlobalVar.StackPosition,tmp);    // add jpanl
-						else													// altrimenti					
-							GlobalVar.Stack.set(GlobalVar.StackPosition,tmp);	// set jpanl
-						
-						GlobalVar.frame.repaint();
-						GlobalVar.frame.getContentPane().repaint();  // i repaint servono per far si che la grafica si aggiorni , altrimenti diventa tutto glitchato
-						
+						GlobalVar.GoToPanel(tmp);
 					}
 				});
 				
@@ -105,23 +89,10 @@ public class OspitiInterniPanel extends JPanel {
 						interniBtn.setIcon(new ImageIcon(GlobalVar.img_btn_interni));
 						
 						JPanel tmp = new SceltaModuloPanel();
-						
-						GlobalVar.frame.getContentPane().remove(2);  // + 2 perche 0  e 1 sono riservati alla toolbar e al menu
-						GlobalVar.frame.getContentPane().add(tmp,2);
-						GlobalVar.frame.getContentPane().remove(1);
-						GlobalVar.menu = new NavigationMenu();
-						GlobalVar.frame.getContentPane().add(GlobalVar.menu,1);
-						GlobalVar.menu.setVisible(true);
+				
 						GlobalVar.toolbar.setVisible(true);
 						
-						GlobalVar.StackPosition++;
-						if(GlobalVar.Stack.size() == GlobalVar.StackPosition)    // se l'indice dello stack non e' istanziato
-							GlobalVar.Stack.add(GlobalVar.StackPosition,tmp);    // add jpanl
-						else													// altrimenti					
-							GlobalVar.Stack.set(GlobalVar.StackPosition,tmp);	// set jpanl
-						
-						GlobalVar.frame.repaint();
-						GlobalVar.frame.getContentPane().repaint();
+						GlobalVar.GoToPanel(tmp);
 					
 					}
 				});
