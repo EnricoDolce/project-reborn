@@ -7,57 +7,64 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
+import Global.GlobalVar;
+/**
+ * Classe per la gestione delle comunicazioni, si occupa del download e della creazione delle immagini
+ * con controlli ogni volta che viene avviato il modulo "Visualizza Comunicazioni"
+ * @author Andrea Venturella
+ *
+ */
 public class GestioneComunicazioni {
-	private final String pathSh="/home/arazzo/Arazzo/resources/downloadComunicazioni.sh";
-	private final String pathJPG="/home/arazzo/Arazzo/resources/imgPDF/";
-	private final String pathNew="/home/arazzo/Arazzo/resources/pdf/toImg.txt";
-	private final String pathPDF="/home/arazzo/Arazzo/resources/pdf";
-	private final String pathCom="/home/arazzo/Arazzo/resources/pdf/link.txt";
 	
-//	private final String pathSh="/home/enrico/GitHub/project-reborn/Reborn/Arazzo/resources/downloadComunicazioni.sh";
-//	private final String pathJPG="/home/enrico/GitHub/project-reborn/Reborn/Arazzo/resources/imgPDF/";
-//	private final String pathNew="/home/enrico/GitHub/project-reborn/Reborn/Arazzo/resources/pdf/toImg.txt";
-//	private final String pathPDF="/home/enrico/GitHub/project-reborn/Reborn/Arazzo/resources/pdf";
-//	private final String pathCom="/home/enrico/GitHub/project-reborn/Reborn/Arazzo/resources/pdf/link.txt";
 	private Render render;
 	private TXTReader readerNew;
 	
 	public GestioneComunicazioni() {
 		super();
-		this.render=new Render(pathJPG);
+		this.render=new Render(GlobalVar.pathComJPG);
 	}
-	
-	private void download()
+	/**
+	 * Avvia lo script che permette il download delle comunicazioni
+	 */
+	public void download()
 	{
-		try { // TODO Sistemare donwload la prima volta (scarica fino al file 36) DONE
-			String[] command = {"/bin/bash", pathSh};
-			ProcessBuilder p=new ProcessBuilder(command);
+		try { 
+			String[] command = {GlobalVar.pathComSh,GlobalVar.pathComDownload,GlobalVar.pathCom,GlobalVar.pathComNew,GlobalVar.pathComPDF,GlobalVar.pathComJPG};
+			ProcessBuilder p=new ProcessBuilder(command);  //viene avviato lo script passando i vari paramentri (i percorsi)
 			Process pr=p.start();
 			//Process pr=Runtime.getRuntime().exec("/home/andrea/pdf/downloadComunicazioni.sh"); OLD
-			pr.waitFor();
+			pr.waitFor();  //si attende il terminamento dell'esecuzione
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	private void img() //TODO creazione .jpg per ogni PDF (ciclo) DONE
+	/**
+	 * Crea i file .jpg corrispondenti ai vari .pdf leggendo quali sono ancora da renderizzare
+	 */
+	private void img() 
 	{
-		this.readerNew=new TXTReader(pathNew);
+		this.readerNew=new TXTReader(GlobalVar.pathComNew);
 		Vector<String> toImg=readerNew.txtRead();
 		for(String t: toImg)
 		{
-			render.toJpg(pathPDF+"/"+t);
+			render.toJpg(GlobalVar.pathComPDF+"/"+t);
 		}
 	}
+	/**
+	 * Effettua un controllo dei .pdf e dei .jpg per aggiornarli se necessario
+	 */
 	public void refresh()
 	{
 		download();
 		img();
-		
 	}
+	/**
+	 * Crea un Vector di String e lo ritorna, per permettere la visualizzazione delle varie comunicazioni
+	 * @return Vector<String> contenente i nomi delle varie comunicazioni 
+	 */
 	public Vector<String> nomiComunicazioni()
 	{
-		TXTReader readerComunicazioni=new TXTReader(pathCom);
+		TXTReader readerComunicazioni=new TXTReader(GlobalVar.pathCom);
 		Vector<String> temp=readerComunicazioni.txtRead();
 		Vector<String> nomi=new Vector<String>();
 		for(int i=0;i<temp.size();i++)
@@ -68,6 +75,11 @@ public class GestioneComunicazioni {
 		}
 		return nomi;
 	}
+	/**
+	 * Ritorna l'immagine corrispondente alla comunicazione cercata
+	 * @param nome Nome della comunicazione
+	 * @return Vector<BufferedImage> contenente i .jpg della comunicazione
+	 */
 	public Vector<BufferedImage> imgComunicazione(String nome)
 	{
 		Vector<BufferedImage> img=new Vector<BufferedImage>();
@@ -75,10 +87,10 @@ public class GestioneComunicazioni {
 		for(int i=0;true;i++)
 		{
 			try {
-			    BufferedImage tImg = ImageIO.read(new File(pathJPG+nome+"_"+i+".jpg"));
+			    BufferedImage tImg = ImageIO.read(new File(GlobalVar.pathComJPG+nome+"_"+i+".jpg"));
 			    img.add(tImg);
 			} catch (IOException e) {
-				break;
+				break;  //non esistono più immagini della comunicazione da caricare (le pagine sono finite)
 			}
 		}
 		return img;

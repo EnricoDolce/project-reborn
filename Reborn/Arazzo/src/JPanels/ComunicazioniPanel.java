@@ -19,11 +19,11 @@ import javax.swing.JButton;
 
 public class ComunicazioniPanel extends JPanel {
 
-	/**
-	 * Create the panel.
-	 */
 	Image arrowup ;
 	Image arrowdown;
+	/**
+	 * stringa contenete il nome del file che si vorrà visualizzare
+	 */
 	String file;
 	public ComunicazioniPanel() {
 		setOpaque(false); //sfondo trasparente del panel per permettere la visione dello sfondo del jframe
@@ -45,14 +45,19 @@ public class ComunicazioniPanel extends JPanel {
 			arrow.setBounds(249, 300, 50, 50);
 			add(arrow);
 			
+			/**
+			 * Vector contenente i nomi delle varie comunicazioni
+			 */
 			final Vector<String> files = g.nomiComunicazioni();
 			
 			
 				file = files.get(0);
 				//file = file.substring(0,file.length() - 4); //elimino il .pdf
-				System.out.println(file);
+				//System.out.println(file);
 			
-
+				/**
+				 * Combobox che consente la scelta della comunicazione da visualizzare
+				 */
 			final PCIIComboBox FilecomboBox = new PCIIComboBox(files);
 			FilecomboBox.setBounds(288, 300, 700, 50);
 			FilecomboBox.setFont(new Font("Oswald", Font.BOLD, 22));

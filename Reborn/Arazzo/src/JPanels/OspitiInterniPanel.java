@@ -21,6 +21,9 @@ public class OspitiInterniPanel extends JPanel {
 		this.setLayout(null); //absolute layout
 		this.setBounds(0, 0, 1280, 1024);
 				// settaggio bottone ed eliminazione valori di default ( bordo e colore di background)
+			/**
+			 *  Button per la scelta info
+			 */
 				final JButton ospitiBtn = new JButton("");
 				ospitiBtn.setBorderPainted(false);
 				ospitiBtn.setContentAreaFilled(false); 
@@ -49,19 +52,23 @@ public class OspitiInterniPanel extends JPanel {
 						ospitiBtn.setIcon(new ImageIcon(GlobalVar.img_btn_ospiti));
 						
 						JPanel tmp = new SceltaModuloPanel();
-						
+		
 						
 						GlobalVar.toolbar.setVisible(true);
-						
+						GlobalVar.background.setIcon(new ImageIcon(GlobalVar.img_background_buzzi));
 						GlobalVar.GoToPanel(tmp);
 					}
 				});
 				
 				
-				ospitiBtn.setBounds(640,10,640,1024);
+				ospitiBtn.setBounds(640,0,640,1024);
 				this.add(ospitiBtn);
 
 				// settaggio bottone ed eliminazione valori di default ( bordo e colore di background)
+				/**
+				 * Button per la scelta servizi
+				 * 
+				 */
 				final JButton interniBtn = new JButton("");
 				interniBtn.setBorderPainted(false);     
 				interniBtn.setContentAreaFilled(false); 
@@ -91,13 +98,13 @@ public class OspitiInterniPanel extends JPanel {
 						JPanel tmp = new SceltaModuloPanel();
 				
 						GlobalVar.toolbar.setVisible(true);
-						
+						GlobalVar.background.setIcon(new ImageIcon(GlobalVar.img_background_servizi));
 						GlobalVar.GoToPanel(tmp);
 					
 					}
 				});
 				
-				interniBtn.setBounds(0, 10, 640,1024);
+				interniBtn.setBounds(0, 0, 640,1024);
 				this.add(interniBtn);
 				
 			

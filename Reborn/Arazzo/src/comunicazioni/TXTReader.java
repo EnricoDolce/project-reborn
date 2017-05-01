@@ -4,11 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
-
+/**
+ * Permette di leggere un file .txt 
+ * @author Andrea Venturella
+ *
+ */
 public class TXTReader {
 	private FileReader fr;
 	private BufferedReader bf;
-	
+	/**
+	 * Costruttore della classe
+	 * @param nomeFile nome del File da leggere
+	 */
 	public TXTReader(String nomeFile) {
 		try
 		{
@@ -20,7 +27,10 @@ public class TXTReader {
 			System.out.println("FATAL ERROR: lettura file!");
 		}
 	}
-	
+	/**
+	 * Effettua la lettura
+	 * @return Vector<String> contenente le varie stringhe lette
+	 */
 	public Vector<String> txtRead()
 	{
 		boolean fin=false;
@@ -31,13 +41,11 @@ public class TXTReader {
 			while(t!=null)
 			{		
 					temp.add(t);
-					//System.out.println("ADD");
 					t=bf.readLine();
 			}
 			bf.close();
 			fr.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Errore lettura!");
 		}
 		return temp;

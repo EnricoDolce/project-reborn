@@ -12,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import dualScreenPanels.ScreenRicercaProf;
+import dualscreen.DualScreenFrame;
+
 import Global.GlobalVar;
 import JPanels.ToolBar;
 
@@ -22,11 +25,13 @@ import JPanels.ToolBar;
 
 public class MainFrame {
 	
-	private static JFrame frame;
-
+	/**
+	 * frame dello schermo touch
+	 */
+	private JFrame frame;
 
 	/**
-	 * Launch the application.
+	 * Main che lancia l'applicazione
 	 * 
 	 */
 	public static void main(String[] args) {
@@ -40,6 +45,7 @@ public class MainFrame {
 					
 					
 					MainFrame window = new MainFrame();
+					
 					window.frame.setVisible(true);
 					tk.addAWTEventListener(new AWTEventListener() {
 						
@@ -57,7 +63,7 @@ public class MainFrame {
 	}
 
 	/**
-	 * Create the application.
+	 *  Costruttore del MainFrame
 	 *  con new GlobalVar() , istanzio nella classe GlobalVar tutte la variabili che mi servono statiche , ad esempio le immagini
 	 *  con inizialize() , inizializzo il frame con le sue componenti
 	 * @see GlobalVar
@@ -71,12 +77,7 @@ public class MainFrame {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
-	 * device , e' variabile utilizzata per trovare le deminsioni dello schermo del device attualmente utilizzato e di conseguenza mettere il frame a tutto schermo
-	 * panel, e' variabile di supporto per istanziare la toolbar , il navigationmenu e il jpanel di scelta ospite o interno
-	 * background, e' variabile di tipo label , messa a tutto schermo ed utilizzata per creare il background del frame , non e' il metodo ufficiale ma e' comunque efficace 
-	 * GlobalVar.Stack , e' variabile di tipo vector in cui tengo conto della path di finestra fatta dall'utente , serve per tornare ad una schermata precedente o successiva gia' aperta
-	 * GlobalVar.StackPosition, e' variabile che tiene conto della posizione nello stack , di conseguenza della posizione in cui si trova l'utente
+	 * Inizializza il contenuto del frame.
 	 *
 	 * @return void
 	 * @see ToolBar
@@ -84,9 +85,17 @@ public class MainFrame {
 	 * @see GlobalVar
 	 */
 	private void initialize() {
+		
+		GlobalVar.dualscreenframe = new DualScreenFrame();
+		
 		//prende le informazioni dello screen del device utilizzato
-		GraphicsDevice device = GraphicsEnvironment
-			    .getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		GraphicsEnvironment graphic = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		//GraphicsDevice device = graphic.getDefaultScreenDevice();
+		
+		/**
+		 * variabile che gestisce i due schermi
+		 */
+		GraphicsDevice[] dualscreen = graphic.getScreenDevices(); 
 		
 		
 		frame = new JFrame();
@@ -113,13 +122,18 @@ public class MainFrame {
 	
 		// frame background
 		JLabel background = new JLabel("");
-		background.setIcon(new ImageIcon(GlobalVar.img_background));
+		background.setIcon(new ImageIcon(GlobalVar.img_background_scelta));
 		background.setBounds(0, 0, 1280, 1024);
+		GlobalVar.background = background;
 		frame.getContentPane().add(background);
 		
 		GlobalVar.frame = frame;  // salvo frame per apportare modifiche al frame in futuro da altre classi
 	
-		device.setFullScreenWindow(frame);
+		//dualscreen[0].setFullScreenWindow(frame);  //metto a tutto schermo il frame scelta nello schermo 0
+		
+		dualscreen[1].setFullScreenWindow(GlobalVar.dualscreenframe);  //metto a tutto schermo il frame nello schermo 1
+		GlobalVar.frame.setAlwaysOnTop(true);
+		GlobalVar.dualscreenframe.DualScreenVisible(false);
 	}
 
 

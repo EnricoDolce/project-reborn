@@ -19,23 +19,36 @@ import javax.swing.JButton;
 public class VisualizzaComunicazioniPanel extends JPanel {
 
 	/**
-	 * Create the panel.
+	 * variabile che tiene conto della pagina che si sta visualizzando
 	 */
 	int pos =0;
+	
+	/**
+	 * immagine visualizzata a schermo
+	 */
+	BufferedImage img = null;
+	
+	/**
+	 * Costruttore per la visualizzazione di un file attraverso l'utilizzo dell'oggetto g
+	 * @param file nome del file .pdf
+	 * @param g Oggetto GestioneComunicazioni
+	 */
 	public VisualizzaComunicazioniPanel(String file , GestioneComunicazioni g) {
 		setOpaque(false); //sfondo trasparente del panel per permettere la visione dello sfondo del jframe
 
 		this.setLayout(null);
 		this.setBounds(0, 0, 1280, 1024);
 		
-		
+		/**
+		 * vettore contenete le immagini del pdf file.pdf
+		 */
 		final Vector<BufferedImage> t=g.imgComunicazione(file);
 		 
 		
 		final JLabel label = new JLabel("");
 		label.setBounds(358,95,595,842); 
 		
-		BufferedImage img = null;
+	
 		
 		img = t.get(pos);
 		
@@ -46,7 +59,9 @@ public class VisualizzaComunicazioniPanel extends JPanel {
 		label.setIcon(new ImageIcon(dimg));
 		add(label);
 		
-
+		/**
+		 * Button per tornare alla pagina precedente del file
+		 */
 		final JButton left = new JButton("");
 		left.setBorderPainted(false);
 		left.setFocusPainted(false);
@@ -56,6 +71,9 @@ public class VisualizzaComunicazioniPanel extends JPanel {
 		left.setVisible(false);
 		add(left);
 		
+		/**
+		 * Button per tornare alla pagina successiva del file
+		 */
 		final JButton right = new JButton("");
 		right.setBorderPainted(false);
 		right.setFocusPainted(false);
@@ -68,23 +86,33 @@ public class VisualizzaComunicazioniPanel extends JPanel {
 		if(t.size()>1)
 		{
 			right.setVisible(true);
-			left.setVisible(true);
+			left.setVisible(false);
 		}
 		
 
 			
 			left.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent arg0) {
-					left.setIcon(null);
+					left.setVisible(false);
+					
 				}
 				public void mouseReleased(MouseEvent arg0) {
-					left.setIcon(new ImageIcon(GlobalVar.img_com_left_arrow));
+					left.setVisible(true);
+					
+					
+					
 					if(pos > 0)  // se voglio tornare indietro  non vado in underflow
 					{
-						 BufferedImage img = null;
+						right.setVisible(true);
+						
 						 pos = pos-1;
+
+						 if(pos == 0)
+							 left.setVisible(false);
+						 
 						 img = t.get(pos);
-								
+							
+						 //scalo l'immagine
 						Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
 						        Image.SCALE_SMOOTH);
 						
@@ -98,16 +126,25 @@ public class VisualizzaComunicazioniPanel extends JPanel {
 			
 			right.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent arg0) {
-					right.setIcon(null);
+					right.setVisible(false);
 				}
 				public void mouseReleased(MouseEvent arg0) {
-					right.setIcon(new ImageIcon(GlobalVar.img_com_right_arrow));
+					right.setVisible(true);
+					
+					
 					if(pos < t.size()-1)  // se voglio tornare indietro  non vado in underflow
 					{
-						 BufferedImage img = null;
+						
+						left.setVisible(true);
+						
 						 pos = pos+1;
-						 img = t.get(pos);
+						 
+						 if(pos == t.size()-1)
+							 right.setVisible(false);
+						 
+					    img = t.get(pos);
 								
+					  //scalo l'immagine
 						Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
 						        Image.SCALE_SMOOTH);
 						

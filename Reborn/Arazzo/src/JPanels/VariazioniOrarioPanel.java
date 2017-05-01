@@ -18,7 +18,7 @@ import variazoniOrari.Variazioni;
 public class VariazioniOrarioPanel extends JPanel {
 
 	/**
-	 * Create the panel.
+	 * Creazione del panel delle variazioni orario
 	 * @throws IOException 
 	 */
 	public VariazioniOrarioPanel() throws IOException {
@@ -27,8 +27,10 @@ public class VariazioniOrarioPanel extends JPanel {
 		this.setLayout(null);
 		this.setBounds(0, 0, 1280, 1024);
 		
-		Variazioni tmp = new Variazioni("/home/arazzo/Variazioni giornaliere orario.pdf",
-				"/home/arazzo/Arazzo/resources/imgPDF/variazioniorario.jpg");
+//		
+//		Variazioni tmp = new Variazioni("/home/enrico/Documents/variazioni.pdf",
+//				"/home/enrico/GitHub/project-reborn/Reborn/Arazzo/resources/imgPDF/variazioniorario.jpg");
+		Variazioni tmp = new Variazioni(GlobalVar.pathDayPdf,GlobalVar.pathDayJPG);
 		
 		try{
 			tmp.toJpg();
@@ -37,9 +39,13 @@ public class VariazioniOrarioPanel extends JPanel {
 			System.out.println(e);
 		}
 		
+		
 		JLabel label = new JLabel("");
 		label.setBounds(218,213,842,595); //(230,238,842,595)
 		
+		/**
+		 * immagine della variazione
+		 */
 		BufferedImage img = null;
 		try {
 					img = ImageIO.read(getClass().getResource("/imgPDF/variazioniorario.jpg"));
@@ -48,6 +54,7 @@ public class VariazioniOrarioPanel extends JPanel {
 		    e.printStackTrace();
 		}
 
+		//scalo l'immagine
 		Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
 		        Image.SCALE_SMOOTH);
 		

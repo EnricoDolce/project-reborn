@@ -1,5 +1,6 @@
 package JPanels;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
@@ -25,14 +26,25 @@ import ricevimentoProfessore.Professori;
 public class RicevimentoPanel extends JPanel {
 
 	/**
-	 * Create the panel.
+	 * variabile contenente il numero massimo di professori
 	 */
-	
 	int nuProfessori = 188;    //importante!   , dimensione del vettore per immagazzinare i professori
+	/**
+	 * TextField per la visualizzazione del girono
+	 */
 	private JTextField giorno;
+	/**
+	 * TextField per la visualizzazione del girono
+	 */
 	private JTextField orario;
 	private FindOrarioRicevimentoProfessore f;
+	/**
+	 * freccetta che punta a destra per rendere intuitivo dove clicckare
+	 */
 	Image arrowup ;
+	/**
+	 * freccetta che punta in basso per rendere intuitivo dove clicckare
+	 */
 	Image arrowdown;
 	
 	public RicevimentoPanel() {
@@ -40,12 +52,14 @@ public class RicevimentoPanel extends JPanel {
 
 		this.setLayout(null);
 		this.setBounds(0, 0, 1280, 1024);
+
+		Color c = new Color(246,219,104);
 		
 		 Set <String> tmp = null;
     	 
-		 arrowup = GlobalVar.img_drop_arrow_up.getScaledInstance(15, 15,
+		 arrowup = GlobalVar.img_drop_arrow_up.getScaledInstance(30, 30,
 			        Image.SCALE_SMOOTH);
-		 arrowdown= GlobalVar.img_drop_arrow_down.getScaledInstance(15, 15,
+		 arrowdown= GlobalVar.img_drop_arrow_down.getScaledInstance(30, 30,
 			        Image.SCALE_SMOOTH);
 			
 		 
@@ -58,6 +72,9 @@ public class RicevimentoPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
+		/**
+		 * stringa contenente tutti i nomi dei professori
+		 */
 		String[] professori = new String[nuProfessori];  // stringa che conterra' tutti i professori
 		int i=0;
 		 for (Iterator<String> it = tmp.iterator(); it.hasNext(); ) {
@@ -71,31 +88,37 @@ public class RicevimentoPanel extends JPanel {
 		//freccetta per professori
 			final JLabel arrow = new JLabel("");
 			arrow.setIcon(new ImageIcon(arrowup));
-			arrow.setBounds(249, 342, 20, 20);
+			arrow.setBounds(60, 270, 50, 50);
 			add(arrow);
     	
 			 giorno = new JTextField();
+			 giorno.setForeground(c);
 			 giorno.setHorizontalAlignment(SwingConstants.CENTER);
 			 giorno.setFont(new Font("Oswald", Font.PLAIN, 30));
 			 giorno.setBorder(null);
 			 giorno.setOpaque(false);
 			 giorno.setEditable(false);
-			 giorno.setBounds(512, 336, 236, 37);
+			 giorno.setBounds(545, 270, 200, 50);
 				add(giorno);
 				giorno.setColumns(10);
 			
 			 orario = new JTextField();
+			 orario.setForeground(c);
 			 orario.setHorizontalAlignment(SwingConstants.CENTER);
 			 orario.setFont(new Font("Oswald", Font.PLAIN, 30));
 			 orario.setBorder(null);
 			 orario.setOpaque(false);
 			 orario.setEditable(false);
-			 orario.setBounds(780, 336, 236, 37);
+			 orario.setBounds(970, 270, 200, 50);
 				add(orario);
 				orario.setColumns(10);
     	
+				/**
+				 * Combobox per la scelta del professore di cui si vuole sapere quando fa ricevimento
+				 */
 		final PCIIComboBox comboBox = new PCIIComboBox(professori);
 		comboBox.setMaximumRowCount(15);
+		comboBox.setForeground(new Color(91,81,80));
 		comboBox.setFont(new Font("Oswald", Font.BOLD, 22));
 		comboBox.addItemListener(new ItemListener() {
 		      public void itemStateChanged(ItemEvent e) {
@@ -121,7 +144,7 @@ public class RicevimentoPanel extends JPanel {
 				arrow.setIcon(new ImageIcon(arrowdown));
 			}
 		});
-		comboBox.setBounds(267, 340, 200, 30);
+		comboBox.setBounds(100, 270, 200, 50);
 		
 		add(comboBox);
 		

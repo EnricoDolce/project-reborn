@@ -13,7 +13,7 @@ import Global.GlobalVar;
 public class ToolBar extends JPanel {
 
 	/**
-	 * Creo il JPanel che andra' a gestire i movimenti per tornare alla pagina precendente o successiva , questa classe utilizza lo Stack e la StackPosition che si trovano nella classe GlobalVar.
+	 * Creo il JPanel che andra' a gestire i movimenti per tornare alla pagina precendente , questa classe utilizza lo Stack e la StackPosition che si trovano nella classe GlobalVar.
 	 *
 	 * @see GlobalVar
 	 */
@@ -23,21 +23,25 @@ public class ToolBar extends JPanel {
 		this.setLayout(null);
 		this.setBounds(0, 0, 1280, 100);
 
-
+		/**
+		 * bottone per tornare alla schermata precedente
+		 */
 		final JButton left = new JButton("");
 		left.setBorderPainted(false);
 		left.setFocusPainted(false);
 		left.setContentAreaFilled(false);
 		left.setIcon(new ImageIcon(GlobalVar.img_left_arrow));
-		left.setBounds(10, 5, 60, 60);
+		left.setBounds(15, 8, 60, 60);
 		add(left);
 
-		
+		/**
+		 * bottone per tornare alla schermata iniziale 
+		 */
 		final JButton home = new JButton("");
 		home.setBorderPainted(false);
 		home.setContentAreaFilled(false);
 		home.setIcon(new ImageIcon(GlobalVar.img_home));
-		home.setBounds(1180,-15, 100, 100);
+		home.setBounds(1170,0, 100, 100);
 		add(home);
 	
 		
@@ -68,15 +72,20 @@ public class ToolBar extends JPanel {
 					GlobalVar.Stack.set(GlobalVar.StackPosition, null);
 					GlobalVar.StackPosition--; // decremento la posizione attuale in cui mi trovo
 					
-					GlobalVar.frame.getContentPane().remove(1); // rimuovo il Jpanel che sta nell'indice 2 del frame
+					GlobalVar.frame.getContentPane().remove(1); // rimuovo il Jpanel che sta nell'indice 1 del frame
 					GlobalVar.frame.getContentPane().add(GlobalVar.Stack.get(GlobalVar.StackPosition),1); // setto il Jpanel che e' stato aperto precedentemente
 					GlobalVar.frame.repaint();
 					GlobalVar.frame.getContentPane().repaint(); // aggiorno la grafica
 					
+					
+					if(GlobalVar.StackPosition  == 1 || GlobalVar.StackPosition == 0)  
+						GlobalVar.dualscreenframe.DualScreenVisible(false);  // se sono alla scelta del modulo faccio scomparire il secondo schermo
+					
+					
 					if(GlobalVar.StackPosition == 0) // se mi trovo alla schermata principale , o scelta moduli
 					{
-						
 						GlobalVar.toolbar.setVisible(false); // rendo invisibile la toolbar
+						GlobalVar.background.setIcon(new ImageIcon(GlobalVar.img_background_scelta));
 					}
 				}
 				
@@ -97,16 +106,17 @@ public class ToolBar extends JPanel {
 			}
 			public void mouseReleased(MouseEvent arg0) {
 				
+				GlobalVar.dualscreenframe.DualScreenVisible(false);
 				
 				home.setIcon(new ImageIcon(GlobalVar.img_home));
 				
-					GlobalVar.StackPosition = 0; 
+					GlobalVar.StackPosition = 0; //azzero la stack position
 					
-					GlobalVar.frame.getContentPane().remove(1); // rimuovo il Jpanel che sta nell'indice 2 del frame
+					GlobalVar.frame.getContentPane().remove(1); // rimuovo il Jpanel che sta nell'indice 1 del frame
 					GlobalVar.frame.getContentPane().add(GlobalVar.Stack.get(GlobalVar.StackPosition),1); // setto il Jpanel che e' stato aperto precedentemente
 					GlobalVar.frame.repaint();
 					GlobalVar.frame.getContentPane().repaint(); // aggiorno la grafica
-					
+					GlobalVar.background.setIcon(new ImageIcon(GlobalVar.img_background_scelta));
 					
 						GlobalVar.toolbar.setVisible(false); // rendo invisibile la toolbar
 					
